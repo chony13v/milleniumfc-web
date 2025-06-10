@@ -1,0 +1,81 @@
+################################################################################
+#  Node / Next.js / React                                                      #
+################################################################################
+
+# dependencias
+node_modules/
+
+# directorios de salida de Next y otras builds
+.next/
+out/
+build/
+dist/
+
+# artefactos de Vercel y Netlify
+.vercel/
+.netlify/
+
+# lockfiles alternativos (mantén solo el que uses)
+# yarn.lock
+# pnpm-lock.yaml
+
+################################################################################
+#  Configuración local / IDEs / SO                                            #
+################################################################################
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Linux
+*~
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# VS Code
+.vscode/
+.history/
+
+# JetBrains IDEs
+.idea/
+*.iml
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+################################################################################
+#  Testing & Coverage                                                         #
+################################################################################
+coverage/
+.nyc_output/
+
+################################################################################
+#  Env & Secrets                                                              #
+################################################################################
+
+# Variables de entorno
+.env
+.env.*        # .env.local, .env.production, etc.
+.envrc
+
+# Integraciones
+firebase.json
+.firebaserc
+
+################################################################################
+#  Imágenes generadas                                                          #
+################################################################################
+*.log
+*.pid
+*.seed
+*.tgz
+
+# Archivos de parches (si usas patch-package)
+patches/
