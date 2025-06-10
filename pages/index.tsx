@@ -1,20 +1,24 @@
-export default function Home() {
+import React from "react";
+import Navbar from "@/components/layout/Navbar";
+import Hero from "@/components/sections/Hero";
+import Programs from "@/components/sections/Programs";
+import Philosophy from "@/components/sections/Philosophy";
+import CTA from "@/components/sections/CTA";
+import Contact from "@/components/sections/Contact";
+import Footer from "@/components/layout/Footer";
+
+export default function HomePage() {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="text-center p-4">
-        <h1 className="text-3xl font-bold text-gray-800 mb-4">
-          Bienvenidos a Millenium FC
-        </h1>
-        <p className="text-gray-600 mb-6">
-          Formación de Campeones. Tu camino al fútbol profesional empieza aquí.
-        </p>
-        <a
-          href="/registro"
-          className="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700"
-        >
-          Registrar Jugador
-        </a>
-      </div>
+    <div className="bg-black text-white font-sans">
+      <Navbar />
+      <main className="pt-20">
+        <Hero />
+        <Programs />
+        <Philosophy />
+        <CTA />
+        <Contact />
+      </main>
+      <Footer />
     </div>
   );
 }
