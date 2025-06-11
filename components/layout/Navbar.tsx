@@ -14,14 +14,18 @@ export default function Navbar() {
   const [open, setOpen] = useState(false);
 
   return (
-    <header className="fixed top-0 w-full z-50 bg-black/60 backdrop-blur-md">
-      <div className="max-w-6xl mx-auto flex items-center justify-between px-6 py-4">
-        <Link href="#" className="text-2xl font-extrabold text-white">
+
+    <header className="fixed top-0 w-full z-50 bg-[#1a1a1d] border-b-4 border-gray-700">
+      <div className="max-w-6xl mx-auto flex items-center justify-between px-2 pt-1 pb-4">
+        <Link
+          href="#"
+          className="text-2xl font-extrabold text-white leading-none"
+        >
           Millenium <span className="text-[#725CAD]">FC</span>
         </Link>
 
-        {/* desktop */}
-        <nav className="hidden md:flex gap-10">
+        {/* En escritorio */}
+        <nav className="hidden md:flex gap-8">
           {navLinks.map((link) => (
             <Link
               key={link.href}
@@ -33,7 +37,7 @@ export default function Navbar() {
           ))}
         </nav>
 
-        {/* mobile toggle */}
+        {/* Botón móvil */}
         <Button
           onClick={() => setOpen(!open)}
           className="md:hidden p-2 bg-transparent hover:bg-transparent shadow-none"
@@ -42,9 +46,9 @@ export default function Navbar() {
         </Button>
       </div>
 
-      {/* mobile menu */}
+      {/* Menú móvil */}
       {open && (
-        <div className="md:hidden bg-black border-t border-white/10 px-6 pb-6 flex flex-col gap-4">
+        <div className="md:hidden bg-black border-t border-gray-700 px-6 pb-6 flex flex-col gap-4">
           {navLinks.map((link) => (
             <Link
               key={link.href}
