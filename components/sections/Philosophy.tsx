@@ -1,29 +1,30 @@
 import React from "react";
-import { Button } from "@/components/ui/button";
 
 export default function Philosophy() {
   return (
     <section
       id="filosofia"
-      className="max-w-6xl mx-auto px-6 py-24 grid md:grid-cols-2 gap-12 items-center"
+      className="max-w-4xl mx-auto px-6 py-24 text-center flex flex-col items-center"
     >
-      <div>
-        <h2 className="text-3xl md:text-4xl font-bold mb-6 text-white">
-          Nuestra Filosofía
-        </h2>
-        <p className="text-lg text-white/90 leading-relaxed">
-          Creemos en un desarrollo integral: fundamentos técnicos, táctica
-          avanzada y valores humanos que forman atletas completos capaces de
-          afrontar retos nacionales e internacionales.
-        </p>
-        <Button className="mt-8 bg-[#725CAD] rounded-2xl">Conoce Más</Button>
-      </div>
+      {/* Título */}
+      <h2 className="text-3xl md:text-4xl font-anton font-bold text-white mb-10">
+        Nuestra Filosofía
+      </h2>
 
-      <img
-        src="/about.jpg"
-        className="rounded-2xl shadow-lg object-cover max-h-[450px] w-full"
-        alt="Sesión de entrenamiento en Millenium FC"
-      />
+      {/* Cita de Juan Pablo Montoya */}
+      <blockquote className="text-lg md:text-xl text-white/90 font-barlowm leading-relaxed italic max-w-xl">
+        “En Colombia les encantan los ganadores, pero nadie quiere ser parte del
+        proceso de crear ganadores.”
+        <br />
+        <span className="mt-4 block text-white/60 not-italic font-normal">
+          — Juan Pablo Montoya
+        </span>
+      </blockquote>
+
+      {/* Frase institucional */}
+      <p className="mt-12 text-2xl md:text-3xl font-anton text-[#725CAD]">
+        Formando Campeones
+      </p>
     </section>
   );
 }

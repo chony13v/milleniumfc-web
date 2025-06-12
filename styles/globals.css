@@ -2,10 +2,66 @@
 @tailwind components;
 @tailwind utilities;
 
-html {
-  scroll-behavior: smooth;
+/* Tipografías personalizadas */
+
+/* Anton regular */
+@font-face {
+  font-family: 'anton';
+  src: url('/fonts/Anton-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
 }
 
-body {
-  @apply bg-black text-white;
+/* Anton bold (700) → reutiliza el mismo archivo */
+@font-face {
+  font-family: 'anton';
+  src: url('/fonts/Anton-Regular.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Barlow Condensed Light */
+@font-face {
+  font-family: 'barlowl';
+  src: url('/fonts/BarlowCondensed-Light.ttf') format('truetype');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Barlow Condensed Regular */
+@font-face {
+  font-family: 'barlowr';
+  src: url('/fonts/BarlowCondensed-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Barlow Condensed Medium */
+@font-face {
+  font-family: 'barlowm';
+  src: url('/fonts/BarlowCondensed-Medium.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Barlow Condensed SemiBold */
+@font-face {
+  font-family: 'barlowsb';
+  src: url('/fonts/BarlowCondensed-SemiBold.ttf') format('truetype');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Estilos globales */
+html,
+body,
+#__next {
+  scroll-behavior: smooth;
+  @apply bg-[#1a1a1d] text-white;
 }

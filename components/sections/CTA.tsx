@@ -4,15 +4,28 @@ import { Button } from "@/components/ui/button";
 export default function CTA() {
   return (
     <section className="bg-gradient-to-r from-[#0B1D51] to-[#725CAD] py-20 text-center">
-      <h2 className="text-4xl font-bold mb-4 text-white">
-        ¿Listo para dar el siguiente paso?
+      <h2 className="text-4xl md:text-5xl font-bold mb-6 text-white">
+        ¡Tu sueño de jugar en Argentina comienza aquí!
       </h2>
-      <p className="mb-8 text-white/90 max-w-2xl mx-auto">
-        Reserva una prueba y únete a la familia Millenium. Llevaremos tu talento
-        al máximo nivel.
+
+      <p className="mb-10 text-white/90 max-w-3xl mx-auto text-lg leading-relaxed">
+        Participa en el torneo selectivo que becará a jóvenes talentos para
+        entrenar en Argentina con los mejores.
+        <br className="hidden md:block" />
+        <span className="inline-flex items-center justify-center gap-4 mt-6">
+          <img
+            src="/images/logo-gadmrio.png"
+            alt="Logo Municipio de Riobamba"
+            className="h-16 w-auto inline-block"
+          />
+          <span className="text-white text-2xl font-extrabold">y Millenium FC</span>
+        </span>
+        <br />
+        te llevan a lo más alto. ¡Esta es tu oportunidad!
       </p>
-      <Button className="bg-black text-white rounded-2xl px-8 py-3 shadow-lg">
-        Agenda tu prueba
+
+      <Button className="bg-black text-white rounded-2xl px-10 py-4 shadow-xl text-lg">
+        Reserva tu participación
       </Button>
     </section>
   );

@@ -19,7 +19,7 @@ export default function Navbar() {
       <div className="max-w-6xl mx-auto flex items-center justify-between px-2 pt-1 pb-4">
         <Link
           href="#"
-          className="text-2xl font-extrabold text-white leading-none"
+          className="text-2xl font-barlowsb text-white leading-none"
         >
           Millenium <span className="text-[#725CAD]">FC</span>
         </Link>
@@ -30,7 +30,7 @@ export default function Navbar() {
             <Link
               key={link.href}
               href={link.href}
-              className="text-white/80 hover:text-white transition"
+              className="text-white/80 font-barlowr hover:text-white transition"
             >
               {link.label}
             </Link>
