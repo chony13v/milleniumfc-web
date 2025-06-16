@@ -6,11 +6,11 @@ export default class MyDocument extends Document {
       <Html lang="es">
         <Head>
           {/*  reCAPTCHA v3 para Firebase App Check */}
-          <script
+          {/* <script
             src="https://www.google.com/recaptcha/api.js?render=6LeBz2ErAAAAACyKkaXUCSF91kqaqCTRaOtxyx_V"
             async
             defer
-          />
+          /> */}
         </Head>
         <body className="bg-black text-white">
           <Main />

@@ -1,23 +1,18 @@
 "use client";
 
-// 👇 FIX para TypeScript: declara grecaptcha enterprise
 declare global {
   interface Window {
     grecaptcha: any;
+    __FIREBASE_APP_CHECK__?: boolean;
   }
 }
-export {}; // Requerido en archivos con 'declare global'
+export {};
 
 import { useState, useEffect, FormEvent } from "react";
 import { useRouter } from "next/router";
-import { db } from "@/lib/firebase";
-import {
-  collection,
-  query,
-  where,
-  limit,
-  getDocs,
-} from "firebase/firestore";
+import { db, app } from "@/lib/firebase";
+import { collection, query, where, limit, getDocs } from "firebase/firestore";
+import { initializeAppCheck, ReCaptchaV3Provider } from "firebase/app-check";
 
 /* ---------- Modal reutilizable ---------- */
 type AlertModalProps = {
@@ -30,11 +25,7 @@ type AlertModalProps = {
 function AlertModal({ open, title, message, onClose }: AlertModalProps) {
   if (!open) return null;
   return (
-    <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/60"
-      role="dialog"
-      aria-modal="true"
-    >
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60">
       <div className="bg-white rounded-2xl shadow-2xl w-11/12 max-w-sm p-6 text-center">
         <h2 className="text-xl font-bold text-[#0B1D51] mb-4">{title}</h2>
         <p className="text-gray-700 mb-6">{message}</p>
@@ -56,6 +47,34 @@ export default function ReservaPage() {
   const [showExistsModal, setShowExistsModal] = useState(false);
   const [showErrorModal, setShowErrorModal] = useState(false);
   const router = useRouter();
+
+  // ✅ Cargar el script de reCAPTCHA solo en esta página
+  useEffect(() => {
+    const script = document.createElement("script");
+    script.src =
+      "https://www.google.com/recaptcha/enterprise.js?render=6LeBz2ErAAAAACyKkaXUCSF91kqaqCTRaOtxyx_V";
+    script.async = true;
+    script.defer = true;
+    document.head.appendChild(script);
+
+    return () => {
+      document.head.removeChild(script);
+    };
+  }, []);
+
+  // ✅ App Check (solo en esta página)
+  useEffect(() => {
+    if (typeof window !== "undefined" && !window.__FIREBASE_APP_CHECK__) {
+      initializeAppCheck(app, {
+        provider: new ReCaptchaV3Provider(
+          process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY!
+        ),
+        isTokenAutoRefreshEnabled: true,
+      });
+      window.__FIREBASE_APP_CHECK__ = true;
+      console.info("[App Check] Inicializado localmente en reserva.tsx");
+    }
+  }, []);
 
   // ✅ App Check debug token en desarrollo local
   useEffect(() => {
@@ -82,28 +101,22 @@ export default function ReservaPage() {
     try {
       console.log("🔍 Email normalizado:", normalizedEmail);
 
-      // ✅ reCAPTCHA token
       const token = await window.grecaptcha.execute(
         "6LeBz2ErAAAAACyKkaXUCSF91kqaqCTRaOtxyx_V",
         { action: "RESERVA" }
       );
       console.log("🛡️ Token reCAPTCHA obtenido:", token);
 
-      // 🔍 Buscar en Firebase si ya existe ese email
       const q = query(
         collection(db, "Participantes"),
         where("email", "==", normalizedEmail),
         limit(1)
       );
-
       const snap = await getDocs(q);
-      console.log("📦 Resultado del query:", snap.size);
 
       if (!snap.empty) {
-        console.log("✅ Documento encontrado:", snap.docs[0].data());
         setShowExistsModal(true);
       } else {
-        console.log("🚫 No se encontró el email. Redirigiendo al registro.");
         router.push(`/registro?email=${encodeURIComponent(normalizedEmail)}`);
       }
     } catch (err) {
