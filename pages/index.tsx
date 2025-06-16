@@ -1,4 +1,4 @@
-import React from "react";
+// pages/index.tsx
 import Navbar from "@/components/layout/Navbar";
 import Hero from "@/components/sections/Hero";
 import Programs from "@/components/sections/Programs";

@@ -1,3 +1,4 @@
+import Link from "next/link";
 import React from "react";
 import { Button } from "@/components/ui/button";
 
@@ -18,15 +19,17 @@ export default function CTA() {
             alt="Logo Municipio de Riobamba"
             className="h-16 w-auto inline-block"
           />
-          <span className="text-white text-2xl font-extrabold">y Millenium FC</span>
+          <span className="text-white text-2xl font-extrabold"> | Millenium FC |</span>
         </span>
         <br />
         te llevan a lo más alto. ¡Esta es tu oportunidad!
       </p>
 
-      <Button className="bg-black text-white rounded-2xl px-10 py-4 shadow-xl text-lg">
-        Reserva tu participación
-      </Button>
+      <Link href="/reserva">
+        <Button className="bg-black text-white rounded-2xl px-10 py-4 shadow-xl text-lg">
+          Reserva tu participación
+        </Button>
+      </Link>
     </section>
   );
 }
