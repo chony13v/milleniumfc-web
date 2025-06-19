@@ -1,18 +1,10 @@
 "use client";
 
-declare global {
-  interface Window {
-    grecaptcha: any;
-    __FIREBASE_APP_CHECK__?: boolean;
-  }
-}
-export {};
-
 import { useState, useEffect, FormEvent } from "react";
 import { useRouter } from "next/router";
 import { db, app } from "@/lib/firebase";
 import { collection, query, where, limit, getDocs } from "firebase/firestore";
-import { initializeAppCheck, ReCaptchaV3Provider } from "firebase/app-check";
+import { initializeAppCheck, ReCaptchaEnterpriseProvider } from "firebase/app-check";
 
 /* ---------- Modal reutilizable ---------- */
 type AlertModalProps = {
@@ -46,33 +38,20 @@ export default function ReservaPage() {
   const [loading, setLoading] = useState(false);
   const [showExistsModal, setShowExistsModal] = useState(false);
   const [showErrorModal, setShowErrorModal] = useState(false);
+  const [showInvalidEmailModal, setShowInvalidEmailModal] = useState(false);
   const router = useRouter();
-
-  // ✅ Cargar el script de reCAPTCHA solo en esta página
-  useEffect(() => {
-    const script = document.createElement("script");
-    script.src =
-      "https://www.google.com/recaptcha/enterprise.js?render=6LeBz2ErAAAAACyKkaXUCSF91kqaqCTRaOtxyx_V";
-    script.async = true;
-    script.defer = true;
-    document.head.appendChild(script);
-
-    return () => {
-      document.head.removeChild(script);
-    };
-  }, []);
 
   // ✅ App Check (solo en esta página)
   useEffect(() => {
-    if (typeof window !== "undefined" && !window.__FIREBASE_APP_CHECK__) {
+    if (typeof window !== "undefined" && !(window as any).__FIREBASE_APP_CHECK__) {
       initializeAppCheck(app, {
-        provider: new ReCaptchaV3Provider(
-          process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY!
+        provider: new ReCaptchaEnterpriseProvider(
+          process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY as string
         ),
         isTokenAutoRefreshEnabled: true,
       });
-      window.__FIREBASE_APP_CHECK__ = true;
-      console.info("[App Check] Inicializado localmente en reserva.tsx");
+      (window as any).__FIREBASE_APP_CHECK__ = true;
+      console.info("[App Check] Inicializado en reserva.tsx");
     }
   }, []);
 
@@ -88,25 +67,24 @@ export default function ReservaPage() {
     }
   }, []);
 
+  function isValidEmail(email: string): boolean {
+    const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|net|org|edu|info|es)$/i;
+    return regex.test(email);
+  }
+
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
     setLoading(true);
 
     const normalizedEmail = email.trim().toLowerCase();
-    if (!normalizedEmail) {
+    if (!normalizedEmail || !isValidEmail(normalizedEmail)) {
+      setShowInvalidEmailModal(true);
       setLoading(false);
       return;
     }
 
     try {
-      console.log("🔍 Email normalizado:", normalizedEmail);
-
-      const token = await window.grecaptcha.execute(
-        "6LeBz2ErAAAAACyKkaXUCSF91kqaqCTRaOtxyx_V",
-        { action: "RESERVA" }
-      );
-      console.log("🛡️ Token reCAPTCHA obtenido:", token);
-
+      // 🔹 Firestore internal calls ya incluyen el token App Check automáticamente
       const q = query(
         collection(db, "Participantes"),
         where("email", "==", normalizedEmail),
@@ -120,7 +98,7 @@ export default function ReservaPage() {
         router.push(`/registro?email=${encodeURIComponent(normalizedEmail)}`);
       }
     } catch (err) {
-      console.error("❌ Error al consultar Firestore o reCAPTCHA:", err);
+      console.error("❌ Error en handleSubmit:", err);
       setShowErrorModal(true);
     } finally {
       setLoading(false);
@@ -140,6 +118,12 @@ export default function ReservaPage() {
         title="🚨 Error de conexión"
         message="Estamos experimentando una interrupción en los servicios. Intenta más tarde."
         onClose={() => setShowErrorModal(false)}
+      />
+      <AlertModal
+        open={showInvalidEmailModal}
+        title="❌ Email inválido"
+        message="Por favor ingresa un correo válido que termine en .com, .net, .org, etc."
+        onClose={() => setShowInvalidEmailModal(false)}
       />
 
       <main className="min-h-screen flex items-center justify-center bg-[#1a1a1d] px-4">
@@ -168,7 +152,7 @@ export default function ReservaPage() {
             disabled={loading}
             className="w-full bg-[#0B1D51] text-white font-semibold py-3 rounded-lg shadow-lg hover:bg-[#122f7c] transition"
           >
-            {loading ? "Verificando..." : "Continuar"}
+            {loading ? "Consultando..." : "Continuar"}
           </button>
         </form>
       </main>

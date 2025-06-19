@@ -5,12 +5,12 @@ export default class MyDocument extends Document {
     return (
       <Html lang="es">
         <Head>
-          {/*  reCAPTCHA v3 para Firebase App Check */}
-          {/* <script
-            src="https://www.google.com/recaptcha/api.js?render=6LeBz2ErAAAAACyKkaXUCSF91kqaqCTRaOtxyx_V"
+          {/* reCAPTCHA Enterprise script */}
+          <script
+            src={`https://www.google.com/recaptcha/enterprise.js?render=${process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}`}
             async
             defer
-          /> */}
+          />
         </Head>
         <body className="bg-black text-white">
           <Main />

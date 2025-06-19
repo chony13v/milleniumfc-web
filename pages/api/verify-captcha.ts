@@ -26,18 +26,20 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     );
 
     const { tokenProperties } = response.data;
+    const score = response.data.riskAnalysis?.score ?? 1;
 
-    if (tokenProperties?.valid) {
-      res.status(200).json({ success: true });
-    } else {
-      res.status(401).json({
+    if (!tokenProperties?.valid || score < 0.3) {          // 0-1 scale
+      return res.status(401).json({
         success: false,
-        message: "Invalid token",
-        reason: tokenProperties?.invalidReason,
+        message: "Low reCAPTCHA score",
+        score,
       });
     }
+
+    res.status(200).json({ success: true });
   } catch (error: any) {
     console.error("❌ Error verifying token:", error.response?.data || error.message);
     res.status(500).json({ success: false, message: "Internal Server Error" });
   }
 }
+

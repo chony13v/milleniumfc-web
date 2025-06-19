@@ -19,7 +19,7 @@ export default function RegistroPage() {
     try {
       await addDoc(collection(db, "Participantes"), {
         email: email.trim().toLowerCase(),
-        nombre,
+        fullName: nombre.trim(),
         createdAt: serverTimestamp(),
       });
 

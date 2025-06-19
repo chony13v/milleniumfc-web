@@ -2,6 +2,7 @@
   "/_app": "pages/_app.js",
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
-  "/reserva": "pages/reserva.js",
-  "/": "pages/index.js"
+  "/": "pages/index.js",
+  "/registro": "pages/registro.js",
+  "/reserva": "pages/reserva.js"
 }
