@@ -4,7 +4,11 @@ import { useState, useEffect, FormEvent } from "react";
 import { useRouter } from "next/router";
 import { db, app } from "@/lib/firebase";
 import { collection, query, where, limit, getDocs } from "firebase/firestore";
-import { initializeAppCheck, ReCaptchaEnterpriseProvider } from "firebase/app-check";
+import {
+  initializeAppCheck,
+  ReCaptchaEnterpriseProvider,
+  getToken,
+} from "firebase/app-check";
 
 /* ---------- Modal reutilizable ---------- */
 type AlertModalProps = {
@@ -44,7 +48,7 @@ export default function ReservaPage() {
   // ✅ App Check (solo en esta página)
   useEffect(() => {
     if (typeof window !== "undefined" && !(window as any).__FIREBASE_APP_CHECK__) {
-      initializeAppCheck(app, {
+      const appCheck = initializeAppCheck(app, {
         provider: new ReCaptchaEnterpriseProvider(
           process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY as string
         ),
@@ -52,6 +56,11 @@ export default function ReservaPage() {
       });
       (window as any).__FIREBASE_APP_CHECK__ = true;
       console.info("[App Check] Inicializado en reserva.tsx");
+
+      // 🚀 Fuerza un intercambio inmediato para que Firebase reciba el primer token
+      getToken(appCheck, true)
+        .then(() => console.info("[App Check] Token forzado a Firebase"))
+        .catch((err) => console.error("[App Check] Error al forzar token:", err));
     }
   }, []);
 
